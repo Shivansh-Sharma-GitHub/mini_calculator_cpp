@@ -1,0 +1,128 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+struct Student {
+    std::string name;
+    int rollNumber;
+    float gpa;
+};
+
+std::vector<Student> students;
+
+// Function prototypes
+void addStudent();
+void displayAllStudents();
+void searchStudent();
+void deleteStudent();
+
+int main() {
+    char choice;
+
+    do {
+        std::cout << "Student Database\n";
+        std::cout << "1. Add Student\n";
+        std::cout << "2. Display All Students\n";
+        std::cout << "3. Search Student\n";
+        std::cout << "4. Delete Student\n";
+        std::cout << "5. Quit\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case '1':
+                addStudent();
+                break;
+            case '2':
+                displayAllStudents();
+                break;
+            case '3':
+                searchStudent();
+                break;
+            case '4':
+                deleteStudent();
+                break;
+            case '5':
+                std::cout << "Exiting the program.\n";
+                return 0;
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+
+    } while (true);
+
+    return 0;
+}
+
+void addStudent() {
+    Student student;
+    std::cout << "Enter student name: ";
+    std::cin.ignore(); // Clear input buffer
+    std::getline(std::cin, student.name);
+    std::cout << "Enter roll number: ";
+    std::cin >> student.rollNumber;
+    std::cout << "Enter GPA: ";
+    std::cin >> student.gpa;
+
+    students.push_back(student);
+
+    std::cout << "Student added to the database.\n";
+}
+
+void displayAllStudents() {
+    if (students.empty()) {
+        std::cout << "No students in the database.\n";
+        return;
+    }
+
+    std::cout << "Student List:\n";
+    for (const Student& student : students) {
+        std::cout << "Name: " << student.name << "\n";
+        std::cout << "Roll Number: " << student.rollNumber << "\n";
+        std::cout << "GPA: " << student.gpa << "\n\n";
+    }
+}
+
+void searchStudent() {
+    if (students.empty()) {
+        std::cout << "No students in the database.\n";
+        return;
+    }
+
+    int searchRollNumber;
+    std::cout << "Enter roll number to search for: ";
+    std::cin >> searchRollNumber;
+
+    for (const Student& student : students) {
+        if (student.rollNumber == searchRollNumber) {
+            std::cout << "Student found:\n";
+            std::cout << "Name: " << student.name << "\n";
+            std::cout << "Roll Number: " << student.rollNumber << "\n";
+            std::cout << "GPA: " << student.gpa << "\n";
+            return;
+        }
+    }
+
+    std::cout << "Student with roll number " << searchRollNumber << " not found.\n";
+}
+
+void deleteStudent() {
+    if (students.empty()) {
+        std::cout << "No students in the database.\n";
+        return;
+    }
+
+    int deleteRollNumber;
+    std::cout << "Enter roll number to delete: ";
+    std::cin >> deleteRollNumber;
+
+    for (auto it = students.begin(); it != students.end(); ++it) {
+        if (it->rollNumber == deleteRollNumber) {
+            students.erase(it);
+            std::cout << "Student with roll number " << deleteRollNumber << " deleted.\n";
+            return;
+        }
+    }
+
+    std::cout << "Student with roll number " << deleteRollNumber << " not found.\n";
+}
